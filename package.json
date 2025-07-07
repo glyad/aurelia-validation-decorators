@@ -1,0 +1,161 @@
+{
+  "name": "aurelia-validation-decorators",
+  "description": "An Aurelia 2 plugin.",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "version": "1.0.0",
+  "author": {
+    "name": "David Kossoglyad",
+    "email": "david@logoui.co.il"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glyad/aurelia-validation-decorators"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@aurelia/validation": "latest"
+  },
+  "devDependencies": {
+    "@aurelia/testing": "latest",
+    "@aurelia/ts-jest": "latest",
+    "@aurelia/webpack-loader": "latest",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.3",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.10",
+    "autoprefixer": "^10.4.20",
+    "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.0",
+    "eslint": "^9.30.1",
+    "globals": "^16.3.0",
+    "html-webpack-plugin": "^5.6.3",
+    "husky": "^9.1.7",
+    "jest": "^30.0.4",
+    "jest-environment-jsdom": "^30.0.4",
+    "jest-transform-stub": "^2.0.0",
+    "lint-staged": "^16.1.2",
+    "postcss": "^8.4.49",
+    "postcss-loader": "^8.1.1",
+    "standard-version": "^9.5.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "webpack": "^5.97.1",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "scripts": {
+    "start": "webpack serve",
+    "lint:js": "eslint src test",
+    "lint": "npm run lint:js",
+    "pretest": "npm run lint",
+    "build": "webpack --env production",
+    "analyze": "webpack --env production --analyze",
+    "test": "jest",
+    "prepare": "husky",
+    "release": "standard-version && git push --follow-tags && npm publish"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/test/**/*.spec.ts"
+    ],
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "./test/setup.ts"
+    ],
+    "transform": {
+      "\\.(css|sass|scss|styl|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "jest-transform-stub",
+      "\\.(ts|html)$": "@aurelia/ts-jest"
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.d.ts"
+    ]
+  },
+    "commitlint": {
+    "rules": {
+      "body-leading-blank": [
+        1,
+        "always"
+      ],
+      "footer-leading-blank": [
+        1,
+        "always"
+      ],
+      "header-max-length": [
+        2,
+        "always",
+        100
+      ],
+      "scope-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "subject-case": [
+        2,
+        "never",
+        [
+          "sentence-case",
+          "start-case",
+          "pascal-case",
+          "upper-case"
+        ]
+      ],
+      "subject-empty": [
+        2,
+        "never"
+      ],
+      "subject-full-stop": [
+        2,
+        "never",
+        "."
+      ],
+      "type-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "type-empty": [
+        2,
+        "never"
+      ],
+      "type-enum": [
+        2,
+        "always",
+        [
+          "build",
+          "chore",
+          "ci",
+          "docs",
+          "feat",
+          "fix",
+          "perf",
+          "refactor",
+          "revert",
+          "style",
+          "test"
+        ]
+      ]
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
+  }
+}
