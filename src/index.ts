@@ -253,7 +253,7 @@ export function minItems(length: number, options?: ValidatorOptions) {
 }
 
 /**
- * Creates a validation decorator that enforces a minimum length for a property.
+ * Creates a validation decorator that enforces a minimum string's length for a property.
  * 
  * @param length - The minimum length required for the property
  * @param options - Optional validation configuration options
