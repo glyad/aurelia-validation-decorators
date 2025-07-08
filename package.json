@@ -5,14 +5,14 @@
   "files": [
     "dist"
   ],
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": {
     "name": "David Kossoglyad",
     "email": "david@logoui.co.il"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/glyad/aurelia-validation-decorators"
+    "url": "git+https://github.com/glyad/aurelia-validation-decorators.git"
   },
   "license": "MIT",
   "peerDependencies": {
