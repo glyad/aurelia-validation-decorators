@@ -72,69 +72,23 @@ export function displayName(displayName: string) {
 }
 
 /**
- * Creates a decorator that marks a property as required during validation.
- * 
+ * Creates a validation decorator that ensures a number property's value is between specified minimum and maximum values (inclusive).
+ *
+ * @param min - The minimum value (inclusive) that the property can have
+ * @param max - The maximum value (inclusive) that the property can have
  * @param options - Optional validator configuration options
- * @returns A property decorator that applies a required validation rule
- * 
+ * @returns A property decorator that applies the 'between' validation rule
+ *
  * @example
- * ```typescript
- * class User {
- *   @required()
- *   name: string;
+ * class Person {
+ *   @between(18, 65)
+ *   age: number;
  * }
- * ```
  */
-export function required(options?: ValidatorOptions) {
+export function between(min: number, max: number, options?: ValidatorOptions) {
   return createValidationDecorator(
-    (rule: PropertyRule<IValidateable, unknown>) => rule.required(),
-    [],
-    options
-  );
-}
-
-/**
- * Creates a validation decorator that enforces a minimum length for a property.
- * 
- * @param length - The minimum length required for the property
- * @param options - Optional validation configuration options
- * @returns A property decorator that applies the minimum length validation rule
- * 
- * @example
- * ```typescript
- * class User {
- *   @minLength(8)
- *   password: string;
- * }
- * ```
- */
-export function minLength(length: number, options?: ValidatorOptions) {
-  return createValidationDecorator(
-    (rule: PropertyRule<IValidateable, number>, len: number) => rule.minLength(len),
-    [length],
-    options
-  );
-}
-
-/**
- * Decorator that creates a validation rule to ensure a string's length does not exceed the specified maximum.
- * 
- * @param length - The maximum allowed length for the string
- * @param options - Optional validator configuration options
- * @returns A property decorator that applies the maxLength validation rule
- * 
- * @example
- * ```typescript
- * class User {
- *   @maxLength(10)
- *   username: string;
- * }
- * ```
- */
-export function maxLength(length: number, options?: ValidatorOptions) {
-  return createValidationDecorator(
-    (rule: PropertyRule<IValidateable, number>, len: number) => rule.maxLength(len),
-    [length],
+    (rule: PropertyRule<IValidateable, number>, min: number, max: number) => rule.between(min, max),
+    [min, max],
     options
   );
 }
@@ -192,6 +146,29 @@ export function matches(pattern: RegExp, options?: ValidatorOptions) {
 }
 
 /**
+ * Creates a decorator that validates a numeric property is less than or equal to a specified constraint value.
+ * 
+ * @param constraint - The maximum value allowed for the decorated property
+ * @param options - Optional configuration options for the validation rule
+ * @returns A property decorator that applies a maximum value validation rule
+ * 
+ * @example
+ * ```typescript
+ * class Product {
+ *   @max(100)
+ *   price: number = 0;
+ * }
+ * ```
+ */
+export function max(constraint: number, options?: ValidatorOptions) {
+  return createValidationDecorator(
+    (rule: PropertyRule<IValidateable, number>, constraint: number) => rule.max(constraint),
+    [constraint],
+    options
+  );
+}
+
+/**
  * Creates a validation decorator that ensures an array property does not exceed a specified maximum number of items.
  *
  * @param length - The maximum number of items allowed in the array
@@ -202,6 +179,52 @@ export function maxItems(length: number, options?: ValidatorOptions) {
   return createValidationDecorator(
     (rule: PropertyRule<IValidateable, unknown[]>, count: number) => rule.maxItems(count),
     [length],
+    options
+  );
+}
+
+/**
+ * Decorator that creates a validation rule to ensure a string's length does not exceed the specified maximum.
+ * 
+ * @param length - The maximum allowed length for the string
+ * @param options - Optional validator configuration options
+ * @returns A property decorator that applies the maxLength validation rule
+ * 
+ * @example
+ * ```typescript
+ * class User {
+ *   @maxLength(10)
+ *   username: string;
+ * }
+ * ```
+ */
+export function maxLength(length: number, options?: ValidatorOptions) {
+  return createValidationDecorator(
+    (rule: PropertyRule<IValidateable, number>, len: number) => rule.maxLength(len),
+    [length],
+    options
+  );
+}
+
+/**
+ * Creates a validation decorator that validates a numeric property is greater than or equal to a specified constraint value.
+ * 
+ * @param constraint - The minimum value that the property must be greater than or equal to
+ * @param options - Optional validator configuration options
+ * @returns A property decorator that applies the minimum value validation rule
+ * 
+ * @example
+ * ```typescript
+ * class Product {
+ *   @min(0)
+ *   quantity: number;
+ * }
+ * ```
+ */
+export function min(constraint: number, options?: ValidatorOptions) {
+  return createValidationDecorator(
+    (rule: PropertyRule<IValidateable, number>, constraint: number) => rule.min(constraint),
+    [constraint],
     options
   );
 }
@@ -230,6 +253,29 @@ export function minItems(length: number, options?: ValidatorOptions) {
 }
 
 /**
+ * Creates a validation decorator that enforces a minimum length for a property.
+ * 
+ * @param length - The minimum length required for the property
+ * @param options - Optional validation configuration options
+ * @returns A property decorator that applies the minimum length validation rule
+ * 
+ * @example
+ * ```typescript
+ * class User {
+ *   @minLength(8)
+ *   password: string;
+ * }
+ * ```
+ */
+export function minLength(length: number, options?: ValidatorOptions) {
+  return createValidationDecorator(
+    (rule: PropertyRule<IValidateable, number>, len: number) => rule.minLength(len),
+    [length],
+    options
+  );
+}
+
+/**
  * Creates a property decorator that validates if a number value is within the specified range.
  * 
  * @param min - The minimum value (inclusive) that the property value can be
@@ -249,6 +295,28 @@ export function range(min: number, max: number, options?: ValidatorOptions) {
   return createValidationDecorator(
     (rule: PropertyRule<IValidateable, number>, min: number, max: number) => rule.range(min, max),
     [min, max],
+    options
+  );
+}
+
+/**
+ * Creates a decorator that marks a property as required during validation.
+ * 
+ * @param options - Optional validator configuration options
+ * @returns A property decorator that applies a required validation rule
+ * 
+ * @example
+ * ```typescript
+ * class User {
+ *   @required()
+ *   name: string;
+ * }
+ * ```
+ */
+export function required(options?: ValidatorOptions) {
+  return createValidationDecorator(
+    (rule: PropertyRule<IValidateable, unknown>) => rule.required(),
+    [],
     options
   );
 }
