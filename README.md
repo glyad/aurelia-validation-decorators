@@ -35,54 +35,75 @@ or
     yarn add @aurelia/validation
 ```
 
-## Build the plugin in production modern
+## Usage
 
-    npm run build
+To use the decorators, you need to import them from the `aurelia-validation-decorators` package and apply them to your model properties. Here's an example of how to use the decorators:
 
-It builds plugin into `dist/index.js` file.
+```typescript
+import { required, minLength, displayName } from 'aurelia-validation-decorators';
 
-Note when you do `npm publish` or `npm pack` to prepare the plugin package, it automatically run the above build command by the `prepare` script defined in your package.json `"scripts"` section.
-
-## Consume the plugin
-
-If your plugin is published to npm or a private registry, just install the plugin package.json
-
-    npm install aurelia-validation-decorators
-
-If you want to directly use plugin's git repo.
-
-    npm install git@github.com:username/aurelia-validation-decorators.git
-
-or
-
-    npm install https://some.git.server/username/aurelia-validation-decorators.git
-
-If you want to install from local folder, don't do "npm install ../local/aurelia-validation-decorators/" as the folder's `node_modules/` will cause webpack to complain about duplicated dependency like "@aurelia/metadata".
-
-In this plugin's folder, do
-
-    npm pack
-
-This will pack the plugin into aurelia-validation-decorators
-In an application project's main file.
-
-```js
-import * as myPlugin from 'aurelia-validation-decorators';
-Aurelia
-  // Load all exports from the plugin
-  .register(myPlugin)
-  .app(MyApp)
-  .start();
+class Person {
+  public readonly validationRules: IValidationRules = resolve(IValidationRules);
+  @required({message: 'Name is required.' })
+  @minLength(2, { tag: 'name' })
+  @displayName('Full Name')
+  public name: string = '';
+  @between(0, 120)
+  public age: number = 1;
+  @email({ when: (value: Person) => value.age > 18 })
+  public email: string;
+}
 ```
 
-## Unit Tests
+In the View-Model class:
 
-    npm run test
+```typescript
+import { IValidationController } from '@aurelia/validation';
+export class MyApp {
 
-Run unit tests in watch mode.
+  public person: Person = new Person();
 
-    npm run test:watch
+  public constructor(
+    // This may be moved to the constructor of the base class to avoid repetitive code in View-Models requiring validation
+    readonly validationController: IValidationController = resolve(newInstanceForScope(IValidationController))) {
+  }
+}
+```
 
-## Analyze webpack bundle
+In the View:
 
-    npm run analyze
+```html
+<input type="text" value.bind="person.name & validate">
+```
+
+## Available Decorators
+
+### Common Decorators
+
+- `@displayName(name: string)`: Sets a custom display name for the property, which can be used in validation messages.
+
+### Validation Decorators
+
+| Decorator                                                                                    | Description                                                                            |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `@between(min: number, max: number, options?: ValidatorOptions)`                             | Validates that the property value is between the specified minimum and maximum values. |
+| `@email(options?: ValidatorOptions)`                                                         | Validates that the property is a valid email address.                                  |
+| `@equals(expectedValue: unknown, options?: ValidatorOptions)`                                | Validates that the property equals the expected value.                                 |
+| `@matches(pattern: RegExp, options?: ValidatorOptions)`                                      | Validates that the property matches the specified regular expression.                  |
+| `@max(value: number, options?: ValidatorOptions)`                                            | Validates that the property value is less than or equal to the specified maximum.      |
+| `@maxItems(max: number, options?: ValidatorOptions)`                                         | Validates that the property has a maximum number of items (for arrays).                |
+| `@maxLength(length: number, options?: ValidatorOptions)`                                     | Validates that the property has a maximum length.                                      |
+| `@min(value: number, options?: ValidatorOptions)`                                            | Validates that the property value is greater than or equal to the specified minimum.   |
+| `@minItems(min: number, options?: ValidatorOptions)`                                         | Validates that the property has a minimum number of items (for arrays).                |
+| `@minLength(length: number, options?: ValidatorOptions)`                                     | Validates that the property has a minimum length.                                      |
+| `@range(min: number, max: number, options?: ValidatorOptions)`                               | Validates that the property value is within the specified range.                       |
+| `@required(options?: ValidatorOptions)`                                                      | Marks a property as required.                                                          |
+| `@satisfies(predicate: (value: RuleCondition) => boolean, options?: ValidatorOptions)`       | Validates that the property satisfies a custom predicate function.                     |
+| `@satisfiesRule(rule: IValidationRule<any, IValidateable<any>>, options?: ValidatorOptions)` | Validates that the property satisfies a custom validation rule.                        |
+| `@satisfiesState(validState, stateFunction, messages, options?)`                             | Validates whether a property satisfies a specific state.                               |
+
+## Acknowledgements, Licenses, and Copyright Notices
+
+This project is intended to be used with [Aurelia 2](https://aurelia.io/) framework. This project is licensed under the MIT License. The Aurelia 2 framework is licensed under the separate [MIT license](https://github.com/aurelia/aurelia/blob/master/LICENSE).
+
+Copyright © 2025 David Kossoglyad
