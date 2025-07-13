@@ -2,7 +2,10 @@ on:
   push:
     tags:
       - 'v*'    # triggers on version tag pushes
-
+      
+permissions:
+  contents: write
+  
 jobs:
   release:
     runs-on: ubuntu-latest
