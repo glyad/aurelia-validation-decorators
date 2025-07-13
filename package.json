@@ -68,7 +68,8 @@
     "analyze": "webpack --env production --analyze",
     "test": "jest",
     "prepare": "husky",
-    "release": "standard-version && git push --follow-tags && npm publish"
+    "release": "standard-version && git push --follow-tags && npm publish",
+    "postrelease": "gh release create v1.1.5 -t \"v1.1.5\" -F CHANGELOG.md --latest"
   },
   "jest": {
     "testMatch": [
