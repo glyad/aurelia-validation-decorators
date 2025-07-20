@@ -1,1 +1,63 @@
+<style>
+.error {
+  border: 2px solid #ff0000;
+  color: #ff0000;
+}
+.error-message {
+  color: #ff0000;
+}
+</style>
+
 <h1>Hello World</h1>
+
+<div>
+  <h2>Person Details</h2>
+  <input class="${firstNameErrors.length ? 'error' : ''}" type="text" placeholder="Enter your name"
+     validation-errors.from-view="firstNameErrors" value.bind="person.name & validate">
+  <div>
+    <span class="error-message" repeat.for="error of firstNameErrors">${error.result.message}</span>
+  </div>
+</div>
+<br>
+<div>
+  <input class="${ageErrors.length ? 'error' : ''}" type="number" placeholder="Enter your age"
+    validation-errors.from-view="ageErrors" value.bind="person.age & validate">
+  <div>
+    <span class="error-message" repeat.for="error of ageErrors">${error.result.message}</span>
+  </div>
+</div>
+</div>
+
+<div>
+  <h2>Contact Details</h2>
+
+  <div>
+    <input class="${contactNameErrors.length ? 'error' : ''}" type="text" placeholder="Enter your contact name"
+      validation-errors.from-view="contactNameErrors" value.bind="contact.name & validate">
+    <div>
+      <span class="error-message" repeat.for="error of contactNameErrors">${error.result.message}</span>
+    </div>
+  </div>
+  
+  <div>
+    <input class="${contactPhoneErrors.length ? 'error' : ''}" type="tel" placeholder="Enter your phone number"
+      validation-errors.from-view="contactPhoneErrors" value.bind="contact.phone & validate">
+    <div>
+      <span class="error-message" repeat.for="error of contactPhoneErrors">${error.result.message}</span>
+    </div>
+  </div>
+  <div>
+    <input class="${contactEmailErrors.length ? 'error' : ''}" type="email" placeholder="Enter your email"
+      validation-errors.from-view="contactEmailErrors" value.bind="contact.email & validate">
+    <div>
+      <span class="error-message" repeat.for="error of contactEmailErrors">${error.result.message}</span>
+    </div>
+  </div>
+
+<hr>
+
+<ul>
+  <li repeat.for="error of validationController.results" if.bind="!error.valid">${error}</li>
+</ul>
+
+<hr>
