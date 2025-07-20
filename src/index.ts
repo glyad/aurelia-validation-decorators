@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { resolve } from "@aurelia/kernel";
 import { IValidateable, IValidationRule, IValidationRules, PropertyRule, RuleCondition, ValidationRuleExecutionPredicate } from "@aurelia/validation";
 
 /**
@@ -23,7 +24,7 @@ function createValidationDecorator(
         
     context.addInitializer(function (this: any) {
       if (!this.validationRules) {
-        throw new Error("validationRules property is missing on the class instance. Please ensure the class has a 'validationRules' property of type IValidationRules.");
+        this.validationRules = resolve(IValidationRules);
       }
       
       let thisRule = (this.validationRules as IValidationRules)
