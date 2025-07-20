@@ -48,19 +48,26 @@ To use the decorators, you need to import them from the `aurelia-validation-deco
 ```typescript
 import { required, between, email, maxLength, minLength, displayName } from 'aurelia-validation-decorators';
 
-class Person {
-  // This could be moved to the constructor of the base class to avoid repetitive code in Model entities
-  protected readonly validationRules: IValidationRules = resolve(newInstanceOf(IValidationRules));
+export class Person {
 
   @required({message: 'Name is required.' })
   @minLength(2, { tag: 'name' })
   @maxLength(5)
   @displayName('Full Name')
   public name: string = '';
+
   @between(0, 120)
   public age: number = 1;
+
+  private _email: string;
   @email({ when: (value: Person) => value.age > 18 })
-  public email: string;
+  public get email(): string {
+    return this._email;
+  }
+  public set email(value: string) {
+    this._email = value;
+  }
+
 }
 ```
 
