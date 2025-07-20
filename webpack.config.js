@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
@@ -8,16 +9,17 @@ const nodeExternals = require('webpack-node-externals');
 
 
 const cssLoader = {
-  loader: 'css-loader'
+  loader: 'css-loader',
+  options: {
+    modules: true
+  }
 };
 
 const postcssLoader = {
   loader: 'postcss-loader',
   options: {
     postcssOptions: {
-      plugins: [
-        'autoprefixer'
-      ]
+      plugins: ['autoprefixer']
     }
   }
 };
@@ -71,11 +73,39 @@ module.exports = function(env, { analyze }) {
       rules: [
         { test: /\.(png|svg|jpg|jpeg|gif)$/i, type: 'asset' },
         { test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,  type: 'asset' },
-        { test: /\.css$/i, use: [ 'style-loader', cssLoader, postcssLoader ] },
+        {
+          test: /\.css$/i,
+          // For style loaded in src/main.js, it's not loaded by style-loader.
+          // It's for shared styles for shadow-dom only.
+          issuer: /[/\\]src[/\\]main\.(js|ts)$/,
+          use: [ cssLoader, postcssLoader ]
+        },
+        {
+          test: /\.css$/i,
+          // For style loaded in other js/ts files, it's loaded by style-loader.
+          // They are directly injected to HTML head.
+          issuer: /(?<![/\\]src[/\\]main)\.(js|ts)$/,
+          use: [ 'style-loader', cssLoader, postcssLoader ]
+        },
+        {
+          test: /\.css$/i,
+          // For style loaded in html files, Aurelia will handle it.
+          issuer: /\.html$/,
+          use: [ cssLoader, postcssLoader ]
+        },
         { test: /\.ts$/i, use: ['ts-loader', '@aurelia/webpack-loader'], exclude: /node_modules/ },
         {
           test: /[/\\](?:src|dev-app)[/\\].+\.html$/i,
-          use: '@aurelia/webpack-loader',
+          use: {
+            loader: '@aurelia/webpack-loader',
+            options: {
+              // The other possible Shadow DOM mode is 'closed'.
+              // If you turn on "closed" mode, there will be difficulty to perform e2e
+              // tests (such as Playwright). Because shadowRoot is not accessible through
+              // standard DOM APIs in "closed" mode.
+              defaultShadowOptions: { mode: 'open' }
+            }
+          },
           exclude: /node_modules/
         }
       ]
