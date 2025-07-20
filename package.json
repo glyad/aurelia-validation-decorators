@@ -4,7 +4,10 @@
   "main": "dist/index.js",
   "private": false,
   "files": [
-    "dist"
+    "dist",
+    "package.json",
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "version": "1.1.4",
   "author": {
@@ -15,14 +18,30 @@
     "type": "git",
     "url": "git+https://github.com/glyad/aurelia-validation-decorators.git"
   },
+  "bugs": {
+    "url": "https://github.com/glyad/aurelia-validation-decorators/issues"
+  },
+  "engines": {
+    "node": ">=22.16.0"
+  },
   "license": "MIT",
+  "keywords": [
+    "aurelia",
+    "aurelia2",
+    "aurelia-validation",
+    "aurelia-validation-decorators",
+    "aurelia-plugin",
+    "aurelia2-plugin"
+  ],
   "peerDependencies": {
-    "@aurelia/validation": "^2.0.0-beta.25"
+    "@aurelia/validation": "^2.0.0-beta.25",
+    "@aurelia/validation-html": "^2.0.0-beta.25"
   },
   "devDependencies": {
-    "aurelia": "^2.0.0-beta.25",
     "@aurelia/testing": "^2.0.0-beta.25",
     "@aurelia/ts-jest": "^2.0.0-beta.25",
+    "@aurelia/validation": "^2.0.0-beta.25",
+    "@aurelia/validation-html": "^2.0.0-beta.25",
     "@aurelia/webpack-loader": "^2.0.0-beta.25",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
@@ -33,7 +52,8 @@
     "@semantic-release/npm": "^12.0.2",
     "@semantic-release/release-notes-generator": "^14.0.3",
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.15",
+    "aurelia": "^2.0.0-beta.25",
     "autoprefixer": "^10.4.21",
     "css-loader": "^7.1.2",
     "dotenv-webpack": "^8.1.1",
@@ -52,8 +72,8 @@
     "ts-loader": "^9.5.2",
     "tslib": "^2.8.1",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.36.0",
-    "webpack": "^5.100.1",
+    "typescript-eslint": "^8.37.0",
+    "webpack": "^5.100.2",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",
